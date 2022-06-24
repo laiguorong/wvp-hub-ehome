@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wvp.mapper.WvpDeviceMapper">
+
+    <resultMap type="WvpDevice" id="WvpDeviceResult">
+        <result property="id"    column="id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="deviceIp"    column="device_ip"    />
+        <result property="deviceVersion"    column="device_version"    />
+        <result property="deviceOnline"    column="device_online"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="offlineTime"    column="offline_time"    />
+        <result property="luserId"    column="luser_id"    />
+        <result property="ehomeKey"    column="ehome_key"    />
+        <result property="pushState"    column="push_state"    />
+        <result property="lLinkHandle"    column="llink_handle"    />
+        <result property="sessionId"    column="session_id"    />
+        <result property="videoHlsUrl"    column="video_hls_url"    />
+        <association property="wvpGpsInfo" column="device_id" javaType="WvpGpsInfo"
+                     select="queryGpsInfoByDeviceId"/>
+    </resultMap>
+
+    <select id="queryGpsInfoByDeviceId" resultType="WvpGpsInfo">
+        SELECT
+        	id,device_id,longitude,latitude,create_time
+        FROM
+        	wvp_gps_info
+        where device_id=#{device_id}
+        order by create_time desc LIMIT 1
+    </select>
+
+    <sql id="selectWvpDeviceVo">
+        select id, device_id, device_name, device_ip, device_version, device_online, create_time, update_time, offline_time, luser_id, push_state, ehome_key, llink_handle, session_id, video_hls_url
+        from wvp_device wd
+    </sql>
+
+    <select id="selectWvpDeviceList" resultMap="WvpDeviceResult">
+        <include refid="selectWvpDeviceVo"/>
+        <where>
+            <if test="deviceId != null  and deviceId != ''"> and device_id = #{deviceId}</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="deviceIp != null  and deviceIp != ''"> and device_ip = #{deviceIp}</if>
+            <if test="deviceVersion != null  and deviceVersion != ''"> and device_version = #{deviceVersion}</if>
+            <if test="deviceOnline != null  and deviceOnline != ''"> and device_online = #{deviceOnline}</if>
+        </where>
+        order by device_online desc
+    </select>
+
+    <select id="selectWvpDeviceById" parameterType="Long" resultMap="WvpDeviceResult">
+        <include refid="selectWvpDeviceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWvpDevice" parameterType="WvpDevice" useGeneratedKeys="true" keyProperty="id">
+        insert into wvp_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">device_id,</if>
+            <if test="deviceName != null">device_name,</if>
+            <if test="deviceIp != null">device_ip,</if>
+            <if test="deviceVersion != null">device_version,</if>
+            <if test="deviceOnline != null">device_online,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="offlineTime != null">offline_time,</if>
+            <if test="luserId != null">luser_id,</if>
+            <if test="ehomeKey != null">ehome_key,</if>
+            <if test="pushState != null">push_state,</if>
+            <if test="lLinkHandle != null">llink_handle,</if>
+            <if test="sessionId != null">session_id,</if>
+            <if test="videoHlsUrl != null">video_hls_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="deviceIp != null">#{deviceIp},</if>
+            <if test="deviceVersion != null">#{deviceVersion},</if>
+            <if test="deviceOnline != null">#{deviceOnline},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="offlineTime != null">#{offlineTime},</if>
+            <if test="luserId != null">#{luserId},</if>
+            <if test="ehomeKey != null">#{ehomeKey},</if>
+            <if test="pushState != null">#{pushState},</if>
+            <if test="lLinkHandle != null">#{lLinkHandle},</if>
+            <if test="sessionId != null">#{sessionId},</if>
+            <if test="videoHlsUrl != null">#{videoHlsUrl},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWvpDevice" parameterType="WvpDevice">
+        update wvp_device
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="deviceIp != null">device_ip = #{deviceIp},</if>
+            <if test="deviceVersion != null">device_version = #{deviceVersion},</if>
+            <if test="deviceOnline != null">device_online = #{deviceOnline},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="offlineTime != null">offline_time = #{offlineTime},</if>
+            <if test="luserId != null">luser_id = #{luserId},</if>
+            <if test="ehomeKey != null">ehome_key = #{ehomeKey},</if>
+            <if test="pushState != null">push_state = #{pushState},</if>
+            <if test="lLinkHandle != null">llink_handle = #{lLinkHandle},</if>
+            <if test="sessionId != null">session_id = #{sessionId},</if>
+            <if test="videoHlsUrl != null">video_hls_url = #{videoHlsUrl},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWvpDeviceById" parameterType="Long">
+        delete from wvp_device where id = #{id}
+    </delete>
+
+    <delete id="deleteWvpDeviceByIds" parameterType="String">
+        delete from wvp_device where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateAllDeviceInit">
+        update wvp_device set device_online=0, luser_id=-1, push_state=0,device_version=0,llink_handle=-1,session_id=-1,voice_handle=-1
+    </update>
+
+    <select id="selectWvpDeviceListByOnline" resultMap="WvpDeviceResult">
+        <include refid="selectWvpDeviceVo"/>
+        <where>
+            <if test="deviceId != null  and deviceId != ''"> and device_id = #{deviceId}</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="deviceIp != null  and deviceIp != ''"> and device_ip = #{deviceIp}</if>
+            <if test="deviceVersion != null  and deviceVersion != ''"> and device_version = #{deviceVersion}</if>
+            and device_online = 1
+        </where>
+    </select>
+
+    <select id="selectWvpDeviceByLuserId" parameterType="Long" resultMap="WvpDeviceResult">
+        <include refid="selectWvpDeviceVo"/>
+        where luser_id = #{luserId}
+    </select>
+
+    <select id="selectWvpDeviceByDeviceId" parameterType="String" resultMap="WvpDeviceResult">
+        <include refid="selectWvpDeviceVo"/>
+        where device_id = #{deviceId}
+    </select>
+
+    <select id="selectWvpDeviceByIPreviewHandle" parameterType="Long" resultMap="WvpDeviceResult">
+        <include refid="selectWvpDeviceVo"/>
+        where llink_handle = #{lLinkHandle}
+    </select>
+
+    <select id="selectWvpDeviceBySessionId" parameterType="Long" resultMap="WvpDeviceResult">
+        <include refid="selectWvpDeviceVo"/>
+        where session_id = #{sessionId}
+    </select>
+
+    <select id="selectWvpDeviceByVoiceHandle" parameterType="Long" resultMap="WvpDeviceResult">
+        <include refid="selectWvpDeviceVo"/>
+        where voice_handle = #{voiceHandle}
+    </select>
+</mapper>

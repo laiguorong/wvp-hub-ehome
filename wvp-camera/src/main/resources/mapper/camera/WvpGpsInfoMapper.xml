@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wvp.mapper.WvpGpsInfoMapper">
+
+    <resultMap type="WvpGpsInfo" id="WvpGpsInfoResult">
+        <result property="id"    column="id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectWvpGpsInfoVo">
+        select id, device_id, longitude, latitude, create_time from wvp_gps_info
+    </sql>
+
+    <select id="selectWvpGpsInfoList" parameterType="WvpGpsInfo" resultMap="WvpGpsInfoResult">
+        <include refid="selectWvpGpsInfoVo"/>
+        <where>
+            <if test="deviceId != null  and deviceId != ''"> and device_id = #{deviceId}</if>
+            <if test="longitude != null "> and longitude = #{longitude}</if>
+            <if test="latitude != null "> and latitude = #{latitude}</if>
+        </where>
+    </select>
+
+    <select id="selectWvpGpsInfoById" parameterType="Long" resultMap="WvpGpsInfoResult">
+        <include refid="selectWvpGpsInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWvpGpsInfo" parameterType="WvpGpsInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into wvp_gps_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">device_id,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWvpGpsInfo" parameterType="WvpGpsInfo">
+        update wvp_gps_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWvpGpsInfoById" parameterType="Long">
+        delete from wvp_gps_info where id = #{id}
+    </delete>
+
+    <delete id="deleteWvpGpsInfoByIds" parameterType="String">
+        delete from wvp_gps_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

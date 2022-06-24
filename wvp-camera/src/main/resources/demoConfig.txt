@@ -1,0 +1,44 @@
+# 配置 undertow--监听地址及端口
+
+undertow.devMode=true
+undertow.host=0.0.0.0
+undertow.port=8082
+
+
+######当前以下参数均在前端界面进行配置
+######当前以下参数均在前端界面进行配置（此处配置无效）
+
+#============================================================================================#
+# 心跳间隔，单位：秒
+# KeepAliveSec=15
+# 心跳超时次数
+# TimeOutCount=6
+
+#============================================================================================#
+# CMS COM组件路径：设置CMS模块的HCAapSDKCom（为HCISUP相关依赖库的目录）的路径，如果不配置的话，默认路径为webapp/lib
+# cms_COMPath=./HCAapSDKCom
+
+# AMS COM组件路径：设置AMS模块的HCAapSDKCom（为HCISUP相关依赖库的目录）的路径，如果不配置的话，默认路径为webapp/lib
+# ams_COMPath=./HCAapSDKCom
+
+# SS COM组件路径：设置SS模块的HCAapSDKCom（为HCISUP相关依赖库的目录）的路径，如果不配置的话，默认路径为webapp/lib
+# ss_COMPath=./HCAapSDKCom
+#============================================================================================#
+# 报警服务器公网地址及端口信息
+# alarmServerAddressOuter=10.21.84.44
+# alarmServerPort_tcp=7993
+# alarmServerPort_udp=7993
+#============================================================================================#
+
+# 存储服务器公网地址及端口信息（如存在公网）（针对于云存储）
+# storageServerAddressOuter=10.21.84.44
+# storageServerPort=9665
+
+#============================================================================================#
+
+# 开启 gzip 压缩
+# undertow.gzip.enable=true
+# 配置压缩级别，默认值 -1。 可配置 1 到 9。 1 拥有最快压缩速度，9 拥有最高压缩率
+# undertow.gzip.level=5
+# 触发压缩的最小内容长度
+# undertow.gzip.minLength=1024
