@@ -10,7 +10,7 @@ spring:
             master:
                 url: jdbc:mysql://127.0.0.1:3306/wvp_hub?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
                 username: root
-                password: Kedi@2021..
+                password: 123456789
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
